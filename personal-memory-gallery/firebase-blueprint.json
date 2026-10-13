@@ -1,0 +1,65 @@
+{
+  "entities": {
+    "MemoryImage": {
+      "title": "Memory Image",
+      "description": "A preserved photograph in the memory gallery",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "caption": { "type": "string", "maxLength": 2000 },
+        "url": { "type": "string", "maxLength": 1000000 },
+        "aspect": { "type": "string", "maxLength": 50 },
+        "isFavorite": { "type": "boolean" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "title", "url", "createdAt"]
+    },
+    "MemoryVideo": {
+      "title": "Memory Video",
+      "description": "A preserved video recording in the memory gallery",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 200 },
+        "caption": { "type": "string", "maxLength": 2000 },
+        "url": { "type": "string", "maxLength": 1000000 },
+        "poster": { "type": "string", "maxLength": 1000000 },
+        "duration": { "type": "string", "maxLength": 50 },
+        "isFavorite": { "type": "boolean" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "title", "url", "createdAt"]
+    },
+    "MemoryStory": {
+      "title": "Memory Story",
+      "description": "A preserved personal story in the memory gallery",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string", "maxLength": 300 },
+        "summary": { "type": "string", "maxLength": 2000 },
+        "content": { "type": "string", "maxLength": 50000 },
+        "coverImage": { "type": "string", "maxLength": 1000000 },
+        "mood": { "type": "string", "maxLength": 50 },
+        "isFavorite": { "type": "boolean" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["id", "title", "content", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/images/{imageId}": {
+      "schema": "MemoryImage",
+      "description": "Collection of gallery photographs"
+    },
+    "/videos/{videoId}": {
+      "schema": "MemoryVideo",
+      "description": "Collection of gallery video memories"
+    },
+    "/stories/{storyId}": {
+      "schema": "MemoryStory",
+      "description": "Collection of personal stories"
+    }
+  }
+}

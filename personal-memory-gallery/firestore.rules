@@ -1,0 +1,82 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function isValidImage(data) {
+      return data.keys().hasAll(['id', 'title', 'url', 'createdAt']) &&
+             data.keys().hasOnly(['id', 'title', 'caption', 'url', 'aspect', 'isFavorite', 'createdAt']) &&
+             data.id is string && isValidId(data.id) &&
+             data.title is string && data.title.size() > 0 && data.title.size() <= 200 &&
+             data.url is string && data.url.size() > 0 && data.url.size() <= 1000000 &&
+             data.createdAt is number &&
+             (!('caption' in data) || (data.caption is string && data.caption.size() <= 2000)) &&
+             (!('aspect' in data) || (data.aspect is string && data.aspect.size() <= 50)) &&
+             (!('isFavorite' in data) || data.isFavorite is bool);
+    }
+
+    function isValidVideo(data) {
+      return data.keys().hasAll(['id', 'title', 'url', 'createdAt']) &&
+             data.keys().hasOnly(['id', 'title', 'caption', 'url', 'poster', 'duration', 'isFavorite', 'createdAt']) &&
+             data.id is string && isValidId(data.id) &&
+             data.title is string && data.title.size() > 0 && data.title.size() <= 200 &&
+             data.url is string && data.url.size() > 0 && data.url.size() <= 1000000 &&
+             data.createdAt is number &&
+             (!('caption' in data) || (data.caption is string && data.caption.size() <= 2000)) &&
+             (!('poster' in data) || (data.poster is string && data.poster.size() <= 1000000)) &&
+             (!('duration' in data) || (data.duration is string && data.duration.size() <= 50)) &&
+             (!('isFavorite' in data) || data.isFavorite is bool);
+    }
+
+    function isValidStory(data) {
+      return data.keys().hasAll(['id', 'title', 'content', 'createdAt']) &&
+             data.keys().hasOnly(['id', 'title', 'summary', 'content', 'coverImage', 'mood', 'isFavorite', 'createdAt']) &&
+             data.id is string && isValidId(data.id) &&
+             data.title is string && data.title.size() > 0 && data.title.size() <= 300 &&
+             data.content is string && data.content.size() > 0 && data.content.size() <= 50000 &&
+             data.createdAt is number &&
+             (!('summary' in data) || (data.summary is string && data.summary.size() <= 2000)) &&
+             (!('coverImage' in data) || (data.coverImage is string && data.coverImage.size() <= 1000000)) &&
+             (!('mood' in data) || (data.mood is string && data.mood.size() <= 50)) &&
+             (!('isFavorite' in data) || data.isFavorite is bool);
+    }
+
+    // Default deny-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Connectivity validation test endpoint
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // Public Memory Images
+    match /images/{imageId} {
+      allow read: if true;
+      allow create, update: if isValidId(imageId) && isValidImage(incoming());
+      allow delete: if isValidId(imageId);
+    }
+
+    // Public Memory Videos
+    match /videos/{videoId} {
+      allow read: if true;
+      allow create, update: if isValidId(videoId) && isValidVideo(incoming());
+      allow delete: if isValidId(videoId);
+    }
+
+    // Public Personal Stories
+    match /stories/{storyId} {
+      allow read: if true;
+      allow create, update: if isValidId(storyId) && isValidStory(incoming());
+      allow delete: if isValidId(storyId);
+    }
+  }
+}

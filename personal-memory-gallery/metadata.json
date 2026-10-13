@@ -1,0 +1,8 @@
+{
+  "name": "Personal Memory Gallery",
+  "description": "A modern, serene gallery to preserve and explore your personal photos, videos, and stories with high-fidelity magnification.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

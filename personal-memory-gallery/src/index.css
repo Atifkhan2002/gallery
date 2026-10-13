@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #0c0a09;
+    color: #f5f5f4;
+    overflow-x: hidden;
+  }
+}
+
+.font-serif-display {
+  font-family: 'Fraunces', Georgia, serif;
+}
+
+.font-arabic {
+  font-family: 'Amiri', 'Noto Naskh Arabic', serif;
+}
+
+.font-pashto {
+  font-family: 'Noto Naskh Arabic', 'Amiri', serif;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(28, 25, 23, 0.4);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(120, 113, 108, 0.4);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 162, 158, 0.6);
+}
+
+@keyframes floatSubtle {
+  0%, 100% {
+    transform: translateY(0px);
+    opacity: 0.9;
+  }
+  50% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
+
+.animate-subtle-float-1 {
+  animation: floatSubtle 4.5s ease-in-out infinite;
+}
+
+.animate-subtle-float-2 {
+  animation: floatSubtle 4.5s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
